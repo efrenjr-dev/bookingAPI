@@ -1,6 +1,10 @@
-Exercise to refresh on:
-nodejs
-expressjs
-mongoose
-user authentication
-environment variable
+#Booking API
+
+##Development exercise
+
+###Technologies and Concepts
+-NodeJS
+-ExpressJS
+-Mongoose
+-User authentication
+-Environment variables with dotEnv
