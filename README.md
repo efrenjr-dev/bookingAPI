@@ -1,10 +1,10 @@
-#Booking API
+# Booking API
 
-##Development exercise
+## Development exercise
 
-###Technologies and Concepts
--NodeJS
--ExpressJS
--Mongoose
--User authentication
--Environment variables with dotEnv
+### Technologies and Concepts
+- NodeJS
+- ExpressJS
+- Mongoose
+- User authentication
+- Environment variables with dotEnv
