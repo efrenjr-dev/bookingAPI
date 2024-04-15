@@ -25,7 +25,25 @@ addCourseController = (req, res) => {
         .catch((err) => res.send(err));
 };
 
+getActiveCoursesController = (req, res) => {
+    Course.find({ isActive: true })
+        .then((result) => res.send(result))
+        .catch((err) => res.send(err));
+};
+
+getSingleCourseController = (req, res) => {
+    console.log(req.params);
+    Course.findById(req.params.id)
+        .then((foundCourse) => res.send(foundCourse))
+        .catch((err) => res.sender(err));
+};
+
+// 'getActiveCourses'
+// '/getSingleCourse/:id'
+
 module.exports = {
     getAllCoursesController,
     addCourseController,
+    getActiveCoursesController,
+    getSingleCourseController,
 };
