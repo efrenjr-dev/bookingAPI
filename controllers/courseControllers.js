@@ -38,6 +38,19 @@ getSingleCourseController = (req, res) => {
         .catch((err) => res.sender(err));
 };
 
+updateCourseController = (req, res) => {
+    console.log(req.params);
+    console.log(req.body);
+    let courseUpdates = {
+        name: req.body.name,
+        description: req.body.description,
+        price: req.body.price,
+    };
+    Course.findByIdAndUpdate(req.params.id, courseUpdates, { new: true })
+        .then((result) => res.send(result))
+        .catch((err) => res.send(err));
+};
+
 // 'getActiveCourses'
 // '/getSingleCourse/:id'
 
@@ -46,4 +59,5 @@ module.exports = {
     addCourseController,
     getActiveCoursesController,
     getSingleCourseController,
+    updateCourseController,
 };
