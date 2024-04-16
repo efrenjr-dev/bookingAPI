@@ -1,18 +1,16 @@
 const User = require("../models/User");
-
-// testUserController = (req, res) => {
-//     res.send("Test User Controller");
-// };
-getAllUsersController = (req, res) => {
-    console.log("GET All Users");
-    User.find()
-        .then((result) => res.send(result))
-        .catch((err) => res.send(err));
-};
+const bcrypt = require("bcrypt");
+const { createAccessToken } = require("../auth");
 
 registerUserController = (req, res) => {
     console.log("PUT Register User");
     console.log(req.body);
+
+    if (req.body.password.length < 8)
+        return res.send({ message: "Password is too short." });
+
+    const hashedPW = bcrypt.hashSync(req.body.password, 10);
+    console.log(hashedPW);
 
     User.findOne({ email: req.body.email })
         .then((foundUser) => {
@@ -24,7 +22,7 @@ registerUserController = (req, res) => {
                     lastName: req.body.lastName,
                     mobileNo: req.body.mobileNo,
                     email: req.body.email,
-                    password: req.body.password,
+                    password: hashedPW,
                 });
 
                 newUser
@@ -33,6 +31,37 @@ registerUserController = (req, res) => {
                     .catch((err) => res.send(err));
             }
         })
+        .catch((err) => res.send(err));
+};
+
+loginUserController = (req, res) => {
+    console.log(req.params);
+    User.findOne({ email: req.body.email })
+        .then((result) => {
+            if (result === null) {
+                return res.send({ message: "No User Found." });
+            } else {
+                console.log(req.body);
+                const isPasswordCorrect = bcrypt.compareSync(
+                    req.body.password,
+                    result.password
+                );
+                console.log(isPasswordCorrect);
+                if (isPasswordCorrect) {
+                    return res.send({ accessToken: createAccessToken(result) });
+                } else {
+                    return res.send({ message: "Password is incorrect." });
+                }
+            }
+        })
+        .catch((err) => res.send(err));
+};
+
+getAllUsersController = (req, res) => {
+    console.log("GET All Users");
+    // console.log(req.user);
+    User.find()
+        .then((result) => res.send(result))
         .catch((err) => res.send(err));
 };
 
@@ -48,4 +77,5 @@ module.exports = {
     getAllUsersController,
     registerUserController,
     getSingleUserController,
+    loginUserController,
 };

@@ -7,10 +7,14 @@ const {
     getAllUsersController,
     registerUserController,
     getSingleUserController,
+    loginUserController,
 } = userControllers;
 
-router.get("/", getAllUsersController);
+const { verify } = require("../auth");
+
+router.get("/", verify, getAllUsersController);
 router.post("/", registerUserController);
 router.get("/:id", getSingleUserController);
+router.post("/login", loginUserController);
 
 module.exports = router;

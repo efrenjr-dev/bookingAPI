@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const app = express();
-const port = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000;
 
 main().catch((err) => console.log(err));
 
@@ -24,4 +24,4 @@ app.use("/courses", courseRoutes);
 const userRoutes = require("./routes/userRoutes");
 app.use("/users", userRoutes);
 
-app.listen(port, () => console.log(`Server is running at port ${port}`));
+app.listen(PORT, () => console.log(`Server is running at port ${PORT}`));

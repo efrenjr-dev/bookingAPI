@@ -10,8 +10,10 @@ const {
     getSingleCourseController,
     updateCourseController,
     archiveCourseController,
-    activateCourseController
+    activateCourseController,
 } = courseControllers;
+
+
 
 router.get("/", getAllCoursesController);
 router.post("/", addCourseController);
