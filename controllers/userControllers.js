@@ -35,6 +35,7 @@ registerUserController = (req, res) => {
 };
 
 loginUserController = (req, res) => {
+    console.log("POST Login User");
     console.log(req.params);
     User.findOne({ email: req.body.email })
         .then((result) => {

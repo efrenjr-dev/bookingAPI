@@ -10,7 +10,7 @@ const {
     loginUserController,
 } = userControllers;
 
-const { verify } = require("../auth");
+const { verify, verifyAdmin } = require("../auth");
 
 router.get("/", verify, getAllUsersController);
 router.post("/", registerUserController);

@@ -10,7 +10,7 @@ module.exports.createAccessToken = (user) => {
         isAdmin: user.isAdmin,
     };
 
-    return jwt.sign(data, process.env.SECRET, {});
+    return jwt.sign(data, SECRET, {});
 };
 
 module.exports.verify = (req, res, next) => {
@@ -22,7 +22,7 @@ module.exports.verify = (req, res, next) => {
     } else {
         token = token.slice(7, token.length);
 
-        jwt.verify(token, secret, function (err, decodedToken) {
+        jwt.verify(token, SECRET, function (err, decodedToken) {
             if (err) {
                 return res.send({
                     auth: "Failed",
@@ -33,6 +33,17 @@ module.exports.verify = (req, res, next) => {
                 req.user = decodedToken;
                 next();
             }
+        });
+    }
+};
+
+module.exports.verifyAdmin = (req, res, next) => {
+    if (req.user.isAdmin) {
+        next();
+    } else {
+        return res.send({
+            auth: "Failed",
+            message: "Action Forbidden",
         });
     }
 };
