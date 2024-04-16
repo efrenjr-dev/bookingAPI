@@ -5,12 +5,14 @@ const Course = require("../models/Course");
 // };
 
 getAllCoursesController = (req, res) => {
+    console.log("GET All Courses");
     Course.find()
         .then((result) => res.send(result))
         .catch((err) => res.send(err));
 };
 
 addCourseController = (req, res) => {
+    console.log("POST Add Course");
     console.log(req.body);
 
     let newCourse = new Course({
@@ -26,12 +28,14 @@ addCourseController = (req, res) => {
 };
 
 getActiveCoursesController = (req, res) => {
+    console.log("GET Active Courses");
     Course.find({ isActive: true })
         .then((result) => res.send(result))
         .catch((err) => res.send(err));
 };
 
 getSingleCourseController = (req, res) => {
+    console.log("GET Single Course");
     console.log(req.params);
     Course.findById(req.params.id)
         .then((foundCourse) => res.send(foundCourse))
@@ -39,6 +43,7 @@ getSingleCourseController = (req, res) => {
 };
 
 updateCourseController = (req, res) => {
+    console.log("PUT Update Course");
     console.log(req.params);
     console.log(req.body);
     let courseUpdates = {
@@ -51,8 +56,27 @@ updateCourseController = (req, res) => {
         .catch((err) => res.send(err));
 };
 
-// 'getActiveCourses'
-// '/getSingleCourse/:id'
+archiveCourseController = (req, res) => {
+    console.log("PUT Archive Course");
+    console.log(req.params);
+    let courseUpdates = {
+        isActive: false,
+    };
+    Course.findByIdAndUpdate(req.params.id, courseUpdates, { new: true })
+        .then((result) => res.send(result))
+        .catch((err) => res.send(err));
+};
+
+activateCourseController = (req, res) => {
+    console.log("PUT Activate Course");
+    console.log(req.params);
+    let courseUpdates = {
+        isActive: true,
+    };
+    Course.findByIdAndUpdate(req.params.id, courseUpdates, { new: true })
+        .then((result) => res.send(result))
+        .catch((err) => res.send(err));
+};
 
 module.exports = {
     getAllCoursesController,
@@ -60,4 +84,6 @@ module.exports = {
     getActiveCoursesController,
     getSingleCourseController,
     updateCourseController,
+    archiveCourseController,
+    activateCourseController,
 };

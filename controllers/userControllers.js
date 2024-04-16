@@ -4,12 +4,14 @@ const User = require("../models/User");
 //     res.send("Test User Controller");
 // };
 getAllUsersController = (req, res) => {
+    console.log("GET All Users");
     User.find()
         .then((result) => res.send(result))
         .catch((err) => res.send(err));
 };
 
 registerUserController = (req, res) => {
+    console.log("PUT Register User");
     console.log(req.body);
 
     User.findOne({ email: req.body.email })
@@ -34,4 +36,16 @@ registerUserController = (req, res) => {
         .catch((err) => res.send(err));
 };
 
-module.exports = { getAllUsersController, registerUserController };
+getSingleUserController = (req, res) => {
+    console.log("GET Single User");
+    console.log(req.params);
+    User.findById(req.params.id)
+        .then((result) => res.send(result))
+        .catch((err) => res.send(err));
+};
+
+module.exports = {
+    getAllUsersController,
+    registerUserController,
+    getSingleUserController,
+};

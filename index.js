@@ -13,7 +13,7 @@ async function main() {
 }
 
 let db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error."));
+// db.on("error", console.error.bind(console, "connection error."));
 db.once("open", () => console.log("Connected to MongoDB"));
 
 app.use(express.json());
