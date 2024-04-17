@@ -10,15 +10,17 @@ const {
     loginUserController,
     updateProfileController,
     enrollController,
+    getEnrollmentsController,
 } = userControllers;
 
-const { verify, verifyAdmin } = require("../auth");
+const { verify } = require("../auth");
 
 router.get("/", verify, getAllUsersController);
 router.post("/", registerUserController);
-router.get("/:id", getSingleUserController);
+router.get("/getUserDetails", verify, getSingleUserController);
 router.post("/login", loginUserController);
 router.put("/updateProfile", verify, updateProfileController);
 router.put("/enroll", verify, enrollController);
+router.get("/enrollments", verify, getEnrollmentsController);
 
 module.exports = router;

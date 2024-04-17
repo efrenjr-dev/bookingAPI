@@ -69,8 +69,8 @@ getAllUsersController = (req, res) => {
 
 getSingleUserController = (req, res) => {
     console.log("GET Single User");
-    console.log(req.params);
-    User.findById(req.params.id)
+    console.log(req.user);
+    User.findById(req.user.id)
         .then((result) => res.send(result))
         .catch((err) => res.send(err));
 };
@@ -144,6 +144,11 @@ enrollController = async (req, res) => {
         return res.send("Enrolled Successfully.");
 };
 
+getEnrollmentsController = (req, res) => {
+    console.log("GET Enrollments");
+    return res.send({"message": "GET Enrollments"});
+};
+
 module.exports = {
     getAllUsersController,
     registerUserController,
@@ -151,4 +156,5 @@ module.exports = {
     loginUserController,
     updateProfileController,
     enrollController,
+    getEnrollmentsController,
 };
