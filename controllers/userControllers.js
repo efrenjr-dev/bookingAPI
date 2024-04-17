@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Course = require("../models/Course");
 const bcrypt = require("bcrypt");
 const { createAccessToken } = require("../auth");
 
@@ -91,10 +92,63 @@ updateProfileController = (req, res) => {
         .catch((err) => res.send(err));
 };
 
+enrollController = async (req, res) => {
+    console.log("PUT Enroll");
+    console.log(req.user);
+    console.log(req.body);
+
+    // return res.send({ message: "PUT Enroll" });
+
+    if (req.user.isAdmin)
+        return res.send({
+            auth: "Failed",
+            message: "Action Forbidden",
+        });
+    // return res.send({"message":"not admin"})
+
+    let isUserUpdated = await User.findById(req.user.id).then((foundUser) => {
+        foundUser.enrollments.push({
+            courseId: req.body.courseId,
+            enrolledOn: new Date(),
+            status: "Enrolled",
+        });
+
+        return foundUser
+            .save()
+            .then((savedUser) => true)
+            .catch((err) => err.message);
+    });
+
+    console.log(`Is User Updated? ${isUserUpdated}`);
+    if (!isUserUpdated) return res.send(isUserUpdated);
+
+    let isCourseUpdated = await Course.findById(req.body.courseId).then(
+        (foundCourse) => {
+            foundCourse.enrollees.push({
+                userId: req.user.id,
+                enrolledOn: new Date(),
+                status: "Enrolled",
+            });
+
+            return foundCourse
+                .save()
+                .then((savedUser) => true)
+                .catch((err) => err.message);
+        }
+    );
+
+    console.log(`Is Course Updated? ${isCourseUpdated}`);
+    if (!isCourseUpdated) return res.send(isCourseUpdated);
+
+    if (isUserUpdated && isCourseUpdated)
+        return res.send("Enrolled Successfully.");
+};
+
 module.exports = {
     getAllUsersController,
     registerUserController,
     getSingleUserController,
     loginUserController,
     updateProfileController,
+    enrollController,
 };

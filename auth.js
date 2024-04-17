@@ -39,6 +39,8 @@ module.exports.verify = (req, res, next) => {
 };
 
 module.exports.verifyAdmin = (req, res, next) => {
+    console.log("VERIFY Admin");
+    console.log(req.user.isAdmin);
     if (!req.user.isAdmin) {
         return res.send({
             auth: "Failed",

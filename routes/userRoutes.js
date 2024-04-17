@@ -9,6 +9,7 @@ const {
     getSingleUserController,
     loginUserController,
     updateProfileController,
+    enrollController,
 } = userControllers;
 
 const { verify, verifyAdmin } = require("../auth");
@@ -18,5 +19,6 @@ router.post("/", registerUserController);
 router.get("/:id", getSingleUserController);
 router.post("/login", loginUserController);
 router.put("/updateProfile", verify, updateProfileController);
+router.put("/enroll", verify, enrollController);
 
 module.exports = router;
