@@ -146,7 +146,11 @@ enrollController = async (req, res) => {
 
 getEnrollmentsController = (req, res) => {
     console.log("GET Enrollments");
-    return res.send({"message": "GET Enrollments"});
+    // return res.send({ message: "GET Enrollments" });
+
+    User.findById(req.user.id)
+        .then((foundUser) => res.send(foundUser.enrollments))
+        .catch((err) => res.send(err));
 };
 
 module.exports = {

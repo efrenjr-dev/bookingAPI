@@ -78,6 +78,16 @@ activateCourseController = (req, res) => {
         .catch((err) => res.send(err));
 };
 
+getEnrolleesController = (req, res) => {
+    console.log("GET Enrollees");
+    console.log(req.params);
+    // return res.send({ message: "GET Enrollments" });
+
+    Course.findById(req.params.id)
+        .then((foundCourse) => res.send(foundCourse.enrollees))
+        .catch((err) => res.send(err));
+};
+
 module.exports = {
     getAllCoursesController,
     addCourseController,
@@ -86,4 +96,5 @@ module.exports = {
     updateCourseController,
     archiveCourseController,
     activateCourseController,
+    getEnrolleesController,
 };
