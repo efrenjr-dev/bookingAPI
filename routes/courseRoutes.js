@@ -17,7 +17,7 @@ const {
 const { verify, verifyAdmin } = require("../auth");
 
 router.get("/", verify, verifyAdmin, getAllCoursesController);
-router.post("/", addCourseController);
+router.post("/", verify, verifyAdmin, addCourseController);
 router.get("/getActiveCourses", getActiveCoursesController);
 router.get("/getSingleCourse/:id", getSingleCourseController);
 router.put("/:id", verify, verifyAdmin, updateCourseController);
