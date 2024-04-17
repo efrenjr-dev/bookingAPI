@@ -14,6 +14,7 @@ module.exports.createAccessToken = (user) => {
 };
 
 module.exports.verify = (req, res, next) => {
+    console.log("AUTH Verify");
     let token = req.headers.authorization;
     console.log(token);
 
@@ -38,12 +39,12 @@ module.exports.verify = (req, res, next) => {
 };
 
 module.exports.verifyAdmin = (req, res, next) => {
-    if (req.user.isAdmin) {
-        next();
-    } else {
+    if (!req.user.isAdmin) {
         return res.send({
             auth: "Failed",
             message: "Action Forbidden",
         });
+    } else {
+        next();
     }
 };

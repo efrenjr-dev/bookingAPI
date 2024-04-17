@@ -15,7 +15,7 @@ registerUserController = (req, res) => {
     User.findOne({ email: req.body.email })
         .then((foundUser) => {
             if (foundUser !== null && foundUser.email === req.body.email) {
-                return res.send("Duplicate Email Found!");
+                return res.send({ message: "Duplicate Email Found!" });
             } else {
                 let newUser = new User({
                     firstName: req.body.firstName,
@@ -74,9 +74,27 @@ getSingleUserController = (req, res) => {
         .catch((err) => res.send(err));
 };
 
+updateProfileController = (req, res) => {
+    console.log("PUT Update User");
+    console.log(req.user.id);
+    console.log(req.body);
+    // res.send({ Message: "Update profile", User: req.user });
+
+    let updates = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        mobileNo: req.body.mobileNo,
+    };
+
+    User.findByIdAndUpdate(req.user.id, updates, { new: true })
+        .then((updatedUser) => res.send(updatedUser))
+        .catch((err) => res.send(err));
+};
+
 module.exports = {
     getAllUsersController,
     registerUserController,
     getSingleUserController,
     loginUserController,
+    updateProfileController,
 };
