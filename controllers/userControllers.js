@@ -2,17 +2,17 @@ const User = require("../models/User");
 const Course = require("../models/Course");
 const bcrypt = require("bcrypt");
 const { createAccessToken } = require("../auth");
-const debug = !!+process.env.DEBUG;
+const DEBUG = !!+process.env.DEBUG;
 
 registerUserController = (req, res) => {
-    debug && console.log("PUT Register User");
-    debug && console.log(req.body);
+    DEBUG && console.log("PUT Register User");
+    DEBUG && console.log(req.body);
 
     if (req.body.password.length < 8)
         return res.send({ message: "Password is too short." });
 
     const hashedPW = bcrypt.hashSync(req.body.password, 10);
-    debug && console.log(hashedPW);
+    DEBUG && console.log(hashedPW);
 
     User.findOne({ email: req.body.email })
         .then((foundUser) => {
@@ -37,19 +37,19 @@ registerUserController = (req, res) => {
 };
 
 loginUserController = (req, res) => {
-    debug && console.log("POST Login User");
-    debug && console.log(req.params);
+    DEBUG && console.log("POST Login User");
+    DEBUG && console.log(req.params);
     User.findOne({ email: req.body.email })
         .then((result) => {
             if (result === null) {
                 return res.send({ message: "No User Found." });
             } else {
-                debug && console.log(req.body);
+                DEBUG && console.log(req.body);
                 const isPasswordCorrect = bcrypt.compareSync(
                     req.body.password,
                     result.password
                 );
-                debug && console.log(isPasswordCorrect);
+                DEBUG && console.log(isPasswordCorrect);
                 if (isPasswordCorrect) {
                     return res.send({ accessToken: createAccessToken(result) });
                 } else {
@@ -61,25 +61,25 @@ loginUserController = (req, res) => {
 };
 
 getAllUsersController = (req, res) => {
-    debug && console.log("GET All Users");
-    // debug && console.log(req.user);
+    DEBUG && console.log("GET All Users");
+    // DEBUG && console.log(req.user);
     User.find()
         .then((result) => res.send(result))
         .catch((err) => res.send(err));
 };
 
 getSingleUserController = (req, res) => {
-    debug && console.log("GET Single User");
-    debug && console.log(req.user);
+    DEBUG && console.log("GET Single User");
+    DEBUG && console.log(req.user);
     User.findById(req.user.id)
         .then((result) => res.send(result))
         .catch((err) => res.send(err));
 };
 
 updateProfileController = (req, res) => {
-    debug && console.log("PUT Update User");
-    debug && console.log(req.user.id);
-    debug && console.log(req.body);
+    DEBUG && console.log("PUT Update User");
+    DEBUG && console.log(req.user.id);
+    DEBUG && console.log(req.body);
     // res.send({ Message: "Update profile", User: req.user });
 
     let updates = {
@@ -94,9 +94,9 @@ updateProfileController = (req, res) => {
 };
 
 enrollController = async (req, res) => {
-    debug && console.log("PUT Enroll");
-    debug && console.log(req.user);
-    debug && console.log(req.body);
+    DEBUG && console.log("PUT Enroll");
+    DEBUG && console.log(req.user);
+    DEBUG && console.log(req.body);
 
     // return res.send({ message: "PUT Enroll" });
 
@@ -120,7 +120,7 @@ enrollController = async (req, res) => {
             .catch((err) => err.message);
     });
 
-    debug && console.log(`Is User Updated? ${isUserUpdated}`);
+    DEBUG && console.log(`Is User Updated? ${isUserUpdated}`);
     if (!isUserUpdated) return res.send(isUserUpdated);
 
     let isCourseUpdated = await Course.findById(req.body.courseId).then(
@@ -138,7 +138,7 @@ enrollController = async (req, res) => {
         }
     );
 
-    debug && console.log(`Is Course Updated? ${isCourseUpdated}`);
+    DEBUG && console.log(`Is Course Updated? ${isCourseUpdated}`);
     if (!isCourseUpdated) return res.send(isCourseUpdated);
 
     if (isUserUpdated && isCourseUpdated)
@@ -146,7 +146,7 @@ enrollController = async (req, res) => {
 };
 
 getEnrollmentsController = (req, res) => {
-    debug && console.log("GET Enrollments");
+    DEBUG && console.log("GET Enrollments");
     // return res.send({ message: "GET Enrollments" });
 
     User.findById(req.user.id)
